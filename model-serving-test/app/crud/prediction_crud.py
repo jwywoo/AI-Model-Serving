@@ -14,8 +14,7 @@ def get_prediction(request):
     temp_df = df_up_to_date[num_cols].apply(pd.to_numeric, errors='coerce')
     df_interpolated = temp_df.interpolate(method='linear', axis=0)
     df_interpolated['baseDate'] = df_up_to_date['baseDate']
-    print(df_interpolated.tail())
-    
+    inputs_ready = data_preprocessing(df_interpolated)
     return {
         "longitude": request.longitude,
         "latitude": request.latitude
@@ -53,6 +52,7 @@ def weather_recent(obs):
         obs_last_update+=timedelta(days=1)
     return df_up_to_date
 
+# Parsing
 def json_parsing_200(data, obs, base_date):
     given_data =data['data']
     if (len(given_data) != 0):
@@ -67,3 +67,16 @@ def json_parsing_200(data, obs, base_date):
             df[column] = [np.nan]
         df['baseDate'] = [base_date]
         return df
+
+# Preprocessing
+def data_preprocessing(df):
+    data = df.sort_values('baseDate')
+    prev_day_1 = data.shift(1).drop(columns=['baseDate'])
+    prev_day_2 = data.shift(2).drop(columns=['baseDate'])
+    prev_day_3 = data.shift(3).drop(columns=['baseDate'])
+
+
+    combined_data = pd.concat([data['baseDate'], data['dailyRainfall'],prev_day_1.add_suffix('_prev1'), prev_day_2.add_suffix('_prev2'), prev_day_3.add_suffix('_prev3')], axis=1)
+    combined_data = combined_data.dropna()
+    combined_data = combined_data.reset_index(drop=True)
+    return combined_data
