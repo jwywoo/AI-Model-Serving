@@ -14,7 +14,7 @@ columns_3 = ['observatoryName', 'lowestTemperatureTime', 'highestTemperature', '
 columns_4 = ['observatoryName', 'lowestTemperatureTime', 'highestTemperatureTime', 'maximumWindSpeedTime']
 
 # 월정, 마라도
-columns_5 = ['observatoryName', 'lowestTemperatureTime', 'highestTemperatureTime', 'maximumWindSpeedTime', 'maximumWindSpeedDirection', 'averageWindSpeed']
+columns_5 = ['baseDate', 'averageTemperature', 'lowestTemperature', 'highestTemperature', 'dailyRainfall', 'maximumWindSpeed']
 
 class ObsEnum(Enum):
     # 마라도
