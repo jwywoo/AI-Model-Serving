@@ -1,6 +1,6 @@
 import requests
 from datetime import datetime, timedelta, date
-import time
+import joblib
 import pandas as pd
 import numpy as np
 from ..core.config import settings
@@ -14,11 +14,22 @@ def get_prediction(request):
     temp_df = df_up_to_date[num_cols].apply(pd.to_numeric, errors='coerce')
     df_interpolated = temp_df.interpolate(method='linear', axis=0)
     df_interpolated['baseDate'] = df_up_to_date['baseDate']
-    inputs_ready = data_preprocessing(df_interpolated)
-    return {
-        "longitude": request.longitude,
-        "latitude": request.latitude
-    }
+    preprocessed_data = data_preprocessing(df_interpolated)
+    last_row = preprocessed_data.iloc[-1]
+    last_row_df = last_row.to_frame().T.drop(columns=["baseDate", "dailyRainfall"])
+    model = joblib.load(selected_obs['path_to_model'])
+    model_prediction = model.predict(last_row_df)[0]
+    if (model_prediction == 1):
+        return {
+            "location": selected_obs['observatoryName'],
+            "message": "비 내린다!!!!"
+        }
+    else: 
+        return {
+            "location": selected_obs['observatoryName'],
+            "message": "비 안내린다!!!!"
+        }
+    
 # Supporting Methods
 # finding observatory based on given request
 def find_obs(request):

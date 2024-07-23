@@ -139,6 +139,7 @@ GitHub.sublime-settings
 
 .venv/
 .env/
+trained_models/
 
 *.pyc
 __pycache__/

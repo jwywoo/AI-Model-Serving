@@ -24,6 +24,7 @@ class ObsEnum(Enum):
 		"latitude": "33.1221",
         "last_update": date(2024,7,2),
         "exclude": columns_5,
+        "path_to_model":"app/trained_models/마라도_esm_model.pkl",
     }
     # 외도
     obs_864 = {
@@ -32,6 +33,7 @@ class ObsEnum(Enum):
 		"latitude": "33.4769",
         "exclude":columns_1,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 대정
     obs_793 = {
@@ -40,6 +42,7 @@ class ObsEnum(Enum):
 		"latitude": "33.2410",
         "exclude":columns_1,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 중문
     obs_328 = {
@@ -48,6 +51,7 @@ class ObsEnum(Enum):
 		"latitude": "33.2494",
         "exclude":columns_2,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 제주남원
     obs_780 = {
@@ -56,6 +60,7 @@ class ObsEnum(Enum):
 		"latitude": "33.2772",
         "exclude":columns_2,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 대흘
     obs_330 = {
@@ -64,6 +69,7 @@ class ObsEnum(Enum):
 		"latitude": "33.5008",
         "exclude":columns_3,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 구좌
     obs_781 = {
@@ -72,6 +78,7 @@ class ObsEnum(Enum):
 		"latitude": "33.5199",
         "exclude":columns_1,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 진달래밭
     obs_870 = {
@@ -80,6 +87,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3698",
         "exclude":columns_1,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 영실
     obs_869 = {
@@ -88,6 +96,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3483",
         "exclude":columns_1,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 서광
     obs_752 = {
@@ -96,6 +105,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3046",
         "exclude":columns_1,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 새별오름
     obs_883 = {
@@ -104,6 +114,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3623",
         "exclude":columns_1,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 어리목
     obs_753 = {
@@ -112,6 +123,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3930",
         "exclude":columns_4,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 월정
     obs_861 = {
@@ -120,6 +132,7 @@ class ObsEnum(Enum):
 		"latitude": "33.5623",
 		"exclude": columns_5,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 제주가시리
     obs_890 = {
@@ -128,6 +141,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3854",
         "exclude":columns_2,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
     # 애월
     obs_893 = {
@@ -136,4 +150,5 @@ class ObsEnum(Enum):
 		"latitude": "33.4659",
         "exclude":columns_1,
         "last_update": date(2024,7,2),
+        "path_to_model":"",
     }
