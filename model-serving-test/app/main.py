@@ -8,7 +8,7 @@ app.include_router(prediction_router.router)
 
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "this is message and root"}
 
 # Remove it
