@@ -105,6 +105,7 @@ venv/
 ENV/ 
 env.bak/ 
 venv.bak/ 
+model_serving_env/
 
 # mkdocs documentation 
 /site 
@@ -138,6 +139,8 @@ GitHub.sublime-settings
 .history
 
 .venv/
+.env/
+trained_models/
 
 *.pyc
 __pycache__/
