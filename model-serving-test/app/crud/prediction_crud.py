@@ -30,30 +30,35 @@ def get_prediction(request):
     preprocessed_data = data_preprocessing(df_interpolated)
 
     # Prediction
-    print("Prediction1")
-    last_row = preprocessed_data.iloc[-1]
-    print(last_row)
-    last_row_date = last_row.at['baseDate']
-    last_row_df = last_row.to_frame().T.drop(columns=["baseDate", "dailyRainfall"])
-    # add try catch
+    # Prediction: today, tomorrow, the day after tomorrow, two days after tomorrow
+    prediction_days = -4
+    # baseDate: responseDto
+    predictions_list = []
     model = joblib.load(unicodedata.normalize("NFC",selected_obs['path_to_model']))
-    model_prediction = model.predict(last_row_df)[0]
-    print(model_prediction)
-    if (model_prediction == 1):
-        response_dto = RainingResponseDto(
-            obs_name=selected_obs['observatoryName'],
-            predicted_date=last_row_date,
-            raining_status=True,
-            raining_amount=last_row.at['dailyRainfall']
-        )
-        return response_dto
-    else: 
-        response_dto = RainingResponseDto(
-            obs_name=selected_obs['observatoryName'],
-            predicted_date=last_row_date,
-            raining_status=False
-        )
-        return response_dto
+    while (prediction_days < 0):
+        current_row = preprocessed_data.iloc[prediction_days]
+        current_row_date = current_row.at['baseDate']
+        current_row_raining = current_row.at['dailyRainfall']
+        current_row_df = current_row.to_frame().T.drop(columns=["baseDate", "dailyRainfall"])
+        current_row_prediction = model.predict(current_row_df)[0]
+        if (current_row_prediction == 1) :
+            # raining
+            predictions_list.append(RainingResponseDto(
+                obs_name=selected_obs['observatoryName'],
+                predicted_date=current_row_date,
+                raining_status=True,
+                raining_amount=current_row_raining
+            ))
+        else :
+            # not raining
+            predictions_list.append(NoRainingResponseDto(
+                obs_name=selected_obs['observatoryName'],
+                predicted_date=current_row_date,
+                raining_status=False,
+            ))
+        prediction_days += 1
+    # add try catch
+    return {"data":predictions_list}
     
 # Supporting Methods
 # finding observatory based on given request
@@ -61,9 +66,7 @@ def find_obs(request):
     print("find_obs")
     for obs in ObsEnum:
         obs_info = obs.value
-        obs_long = float(obs_info['longitude'])
-        obs_lat = float(obs_info['latitude'])
-        if (request.longitude==obs_long and request.latitude == obs_lat):
+        if int(obs_info['obs_code']) == request.obs_code:
             return obs_info
     return None
 
@@ -72,9 +75,9 @@ def weather_recent(obs):
     print("weather_recent")
     obs_name = obs['observatoryName']
     obs_last_update = obs['last_update']
-    now = datetime.now().date()
+    up_to = datetime.now().date()+timedelta(days=3)
     df_up_to_date = pd.DataFrame(columns=obs['include'])
-    while (obs_last_update <= now):
+    while (obs_last_update <= up_to):
         project_key = settings.project_key
         year_month_day = obs_last_update.strftime("%Y%m%d")
         url = f'https://open.jejudatahub.net/api/proxy/1aD5taat1attaa51Db1511b51ab9Da19/{project_key}?searchDate={year_month_day}&observatoryName={obs_name}'
