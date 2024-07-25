@@ -3,9 +3,14 @@ from datetime import datetime, timedelta, date
 import joblib
 import pandas as pd
 import numpy as np
-from ..core.config import settings
+import unicodedata
+import os
 
-from ..enum.obs_enum import ObsEnum
+from ..core.config import settings
+from ..schema.prediction_response_schema import RainingResponseDto, NoRainingResponseDto
+from ..projectenum.obs_enum import ObsEnum
+
+
 
 def get_prediction(request):
     # find obs
@@ -25,22 +30,30 @@ def get_prediction(request):
     preprocessed_data = data_preprocessing(df_interpolated)
 
     # Prediction
+    print("Prediction1")
     last_row = preprocessed_data.iloc[-1]
+    print(last_row)
+    last_row_date = last_row.at['baseDate']
     last_row_df = last_row.to_frame().T.drop(columns=["baseDate", "dailyRainfall"])
-    model = joblib.load(selected_obs['path_to_model'])
+    # add try catch
+    model = joblib.load(unicodedata.normalize("NFC",selected_obs['path_to_model']))
     model_prediction = model.predict(last_row_df)[0]
-
-
+    print(model_prediction)
     if (model_prediction == 1):
-        return {
-            "location": selected_obs['observatoryName'],
-            "message": "비 내린다!!!!"
-        }
+        response_dto = RainingResponseDto(
+            obs_name=selected_obs['observatoryName'],
+            predicted_date=last_row_date,
+            raining_status=True,
+            raining_amount=last_row.at['dailyRainfall']
+        )
+        return response_dto
     else: 
-        return {
-            "location": selected_obs['observatoryName'],
-            "message": "비 안내린다!!!!"
-        }
+        response_dto = RainingResponseDto(
+            obs_name=selected_obs['observatoryName'],
+            predicted_date=last_row_date,
+            raining_status=False
+        )
+        return response_dto
     
 # Supporting Methods
 # finding observatory based on given request
@@ -61,7 +74,7 @@ def weather_recent(obs):
     obs_last_update = obs['last_update']
     now = datetime.now().date()
     df_up_to_date = pd.DataFrame(columns=obs['include'])
-    while (obs_last_update < now):
+    while (obs_last_update <= now):
         project_key = settings.project_key
         year_month_day = obs_last_update.strftime("%Y%m%d")
         url = f'https://open.jejudatahub.net/api/proxy/1aD5taat1attaa51Db1511b51ab9Da19/{project_key}?searchDate={year_month_day}&observatoryName={obs_name}'
