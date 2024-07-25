@@ -1,5 +1,7 @@
 from enum import Enum
 from datetime import date
+import unicodedata 
+
 
 # 대정, 구좌, 영실, 서광, 진달래밭, 새별오름, 애월, 외도
 columns_1 = ['baseDate', 'averageTemperature', 'lowestTemperature', 'highestTemperature', 'dailyRainfall', 'maximumWindSpeed', 'averageWindSpeed']
@@ -24,7 +26,8 @@ class ObsEnum(Enum):
 		"latitude": "33.1221",
         "last_update": date(2024,7,2),
         "include": columns_5,
-        "path_to_model":"app/trained_models/마라도_esm_model.pkl",
+        "path_to_model": "trained_models/726_esm_model.pkl"
+
     }
     # 외도
     obs_864 = {
@@ -33,7 +36,7 @@ class ObsEnum(Enum):
 		"latitude": "33.4769",
         "include":columns_1,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/외도_esm_model.pkl",
+        "path_to_model":"trained_models/864_esm_model.pkl",
     }
     # 대정
     obs_793 = {
@@ -42,7 +45,7 @@ class ObsEnum(Enum):
 		"latitude": "33.2410",
         "include":columns_1,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/대정_esm_model.pkl",
+        "path_to_model":"trained_models/793_esm_model.pkl",
     }
     # 중문
     obs_328 = {
@@ -51,7 +54,7 @@ class ObsEnum(Enum):
 		"latitude": "33.2494",
         "include":columns_2,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/중문_esm_model.pkl",
+        "path_to_model":"trained_models/328_esm_model.pkl",
     }
     # 제주남원
     obs_780 = {
@@ -60,7 +63,7 @@ class ObsEnum(Enum):
 		"latitude": "33.2772",
         "include":columns_2,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/제주남원_esm_model.pkl",
+        "path_to_model":"trained_models/780_esm_model.pkl",
     }
     # 대흘
     obs_330 = {
@@ -69,7 +72,7 @@ class ObsEnum(Enum):
 		"latitude": "33.5008",
         "include":columns_3,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/대흘_esm_model.pkl",
+        "path_to_model":"trained_models/330_esm_model.pkl",
     }
     # 구좌
     obs_781 = {
@@ -78,7 +81,7 @@ class ObsEnum(Enum):
 		"latitude": "33.5199",
         "include":columns_1,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/구좌_esm_model.pkl",
+        "path_to_model":"trained_models/781_esm_model.pkl",
     }
     # 진달래밭
     obs_870 = {
@@ -87,7 +90,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3698",
         "include":columns_1,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/진달래밭_esm_model.pkl",
+        "path_to_model":"trained_models/870_esm_model.pkl",
     }
     # 영실
     obs_869 = {
@@ -96,7 +99,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3483",
         "include":columns_1,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/영실_esm_model.pkl",
+        "path_to_model":"trained_models/869_esm_model.pkl",
     }
     # 서광
     obs_752 = {
@@ -105,7 +108,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3046",
         "include":columns_1,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/서광_esm_model.pkl",
+        "path_to_model":"trained_models/752_esm_model.pkl",
     }
     # 새별오름
     obs_883 = {
@@ -114,7 +117,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3623",
         "include":columns_1,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/새별오름_esm_model.pkl",
+        "path_to_model":"trained_models/883_esm_model.pkl",
     }
     # 어리목
     obs_753 = {
@@ -123,7 +126,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3930",
         "include":columns_4,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/어리목_esm_model.pkl",
+        "path_to_model":"trained_models/753_esm_model.pkl",
     }
     # 월정
     obs_861 = {
@@ -132,7 +135,7 @@ class ObsEnum(Enum):
 		"latitude": "33.5623",
 		"include": columns_5,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/월정_esm_model.pkl",
+        "path_to_model":"trained_models/861_esm_model.pkl",
     }
     # 제주가시리
     obs_890 = {
@@ -141,7 +144,7 @@ class ObsEnum(Enum):
 		"latitude": "33.3854",
         "include":columns_2,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/제주가시리_esm_model.pkl",
+        "path_to_model":"trained_models/890_esm_model.pkl",
     }
     # 애월
     obs_893 = {
@@ -150,5 +153,5 @@ class ObsEnum(Enum):
 		"latitude": "33.4659",
         "include":columns_1,
         "last_update": date(2024,7,2),
-        "path_to_model":"app/trained_models/애월_esm_model.pkl",
+        "path_to_model":"trained_models/893_esm_model.pkl",
     }
