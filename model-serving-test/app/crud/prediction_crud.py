@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import unicodedata
 import os
+from fastapi import HTTPException
 
 from ..core.config import settings
 from ..schema.prediction_response_schema import RainingResponseDto, NoRainingResponseDto
@@ -17,11 +18,6 @@ def get_prediction(request):
     selected_obs = find_obs(request=request)
     # update df to recent data
     df_up_to_date = weather_recent(obs=selected_obs)
-    print("here? 1")
-    if (df_up_to_date is None):
-        return {
-            "message": "Errorrrrrr"
-        }
     # Preprocessing
     num_cols = df_up_to_date.drop(columns=['baseDate']).columns
     temp_df = df_up_to_date[num_cols].apply(pd.to_numeric, errors='coerce')
@@ -62,15 +58,19 @@ def get_prediction(request):
     
 # Supporting Methods
 # finding observatory based on given request
+# Raise Error if obs_code is not valid
 def find_obs(request):
     print("find_obs")
+    obs_codes = [int(obs.value['obs_code']) for obs in ObsEnum]
+    if (request.obs_code not in obs_codes):
+        raise HTTPException(status_code=404, detail="Given code not valid")
     for obs in ObsEnum:
         obs_info = obs.value
         if int(obs_info['obs_code']) == request.obs_code:
             return obs_info
-    return None
 
 # Updating recent weather data
+# Raise Error if server can't update recent data
 def weather_recent(obs):
     print("weather_recent")
     obs_name = obs['observatoryName']
@@ -93,6 +93,8 @@ def weather_recent(obs):
         else:
             return None
         obs_last_update+=timedelta(days=1)
+    if (df_up_to_date == None):
+        raise HTTPException(status_code=500, detail="Recent Data Can't Be Updated"))
     return df_up_to_date
 
 # Parsing
