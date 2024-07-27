@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import unicodedata
 import os
+from fastapi import HTTPException
 
 from ..core.config import settings
 from ..schema.prediction_response_schema import RainingResponseDto, NoRainingResponseDto
@@ -62,15 +63,19 @@ def get_prediction(request):
     
 # Supporting Methods
 # finding observatory based on given request
+# Raise Error if obs_code is not valid
 def find_obs(request):
     print("find_obs")
+    obs_codes = [int(obs.value['obs_code']) for obs in ObsEnum]
+    if (request.obs_code not in obs_codes):
+        raise HTTPException(status_code=404, detail="Given code not valid")
     for obs in ObsEnum:
         obs_info = obs.value
         if int(obs_info['obs_code']) == request.obs_code:
             return obs_info
-    return None
 
 # Updating recent weather data
+# Raise Error if server can't update recent data
 def weather_recent(obs):
     print("weather_recent")
     obs_name = obs['observatoryName']
