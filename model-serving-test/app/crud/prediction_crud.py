@@ -18,11 +18,6 @@ def get_prediction(request):
     selected_obs = find_obs(request=request)
     # update df to recent data
     df_up_to_date = weather_recent(obs=selected_obs)
-    print("here? 1")
-    if (df_up_to_date is None):
-        return {
-            "message": "Errorrrrrr"
-        }
     # Preprocessing
     num_cols = df_up_to_date.drop(columns=['baseDate']).columns
     temp_df = df_up_to_date[num_cols].apply(pd.to_numeric, errors='coerce')
@@ -98,6 +93,8 @@ def weather_recent(obs):
         else:
             return None
         obs_last_update+=timedelta(days=1)
+    if (df_up_to_date == None):
+        raise HTTPException(status_code=500, detail="Recent Data Can't Be Updated"))
     return df_up_to_date
 
 # Parsing
