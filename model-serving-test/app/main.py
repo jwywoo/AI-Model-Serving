@@ -18,6 +18,17 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"message": "Please try again later."},
     )
 
+@app.middleware("http")
+async def asgi_exception_middleware(request: Request, call_next):
+    try:
+        response = await call_next(request)
+    except Exception as exc:
+        return JSONResponse(
+            status_code=500,
+            content={"message": "Please try again later."},
+        )
+    return response
+
 # Cors
 origins = [
     "http://127.0.0.1:8000",
