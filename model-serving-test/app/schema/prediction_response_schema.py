@@ -1,12 +1,9 @@
 from pydantic import BaseModel
+from typing import List
 class PredictionResponseDto(BaseModel):
     obs_name : str
     predicted_date : str
-
-
-class RainingResponseDto(PredictionResponseDto):
     raining_status : bool
-    raining_amount : float
 
-class NoRainingResponseDto(PredictionResponseDto):
-    raining_status : bool
+class PredictionsResponseDto(BaseModel):
+    data: List[PredictionResponseDto]
