@@ -36,15 +36,10 @@
         class PredictionResponseDto(BaseModel):
             obs_name : str
             predicted_date : str
-
-
-        class RainingResponseDto(PredictionResponseDto):
             raining_status : bool
-            raining_amount : float
 
-        class NoRainingResponseDto(PredictionResponseDto):
-            raining_status : bool
-        ```
+        class PredictionsResponseDto(BaseModel):
+            data: List[PredictionResponseDto]
 
     - Method
 
@@ -52,7 +47,7 @@
         # routers/prediction_router.py
         router = APIRouter()
 
-        @router.post("/predict")
+        @router.post("/predict", response_model=PredictionsResponseDto)
         def read_prediction(request: PredictionRequestDto):
             return get_prediction(request)
         
@@ -64,7 +59,7 @@
             ...
             # generate prediction
             return {
-                "data": [prediction1, preditionc2, ....]
+                "data": List[PredictionResponseDto]
             }
         ```
 
