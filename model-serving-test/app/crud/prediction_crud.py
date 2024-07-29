@@ -8,7 +8,7 @@ import os
 from fastapi import HTTPException
 
 from ..core.config import settings
-from ..schema.prediction_response_schema import RainingResponseDto, NoRainingResponseDto
+from ..schema.prediction_response_schema import PredictionResponseDto, PredictionsResponseDto
 from ..projectenum.obs_enum import ObsEnum
 
 
@@ -30,6 +30,7 @@ def get_prediction(request):
     prediction_days = -4
     # baseDate: responseDto
     predictions_list = []
+    print("here?")
     model = joblib.load(unicodedata.normalize("NFC",selected_obs['path_to_model']))
     while (prediction_days < 0):
         current_row = preprocessed_data.iloc[prediction_days]
@@ -39,7 +40,7 @@ def get_prediction(request):
         current_row_prediction = model.predict(current_row_df)[0]
         if (current_row_prediction == 1) :
             # raining
-            predictions_list.append(RainingResponseDto(
+            predictions_list.append(PredictionResponseDto(
                 obs_name=selected_obs['observatoryName'],
                 predicted_date=current_row_date,
                 raining_status=True,
@@ -47,14 +48,14 @@ def get_prediction(request):
             ))
         else :
             # not raining
-            predictions_list.append(NoRainingResponseDto(
+            predictions_list.append(PredictionResponseDto(
                 obs_name=selected_obs['observatoryName'],
                 predicted_date=current_row_date,
                 raining_status=False,
             ))
         prediction_days += 1
     # add try catch
-    return {"data":predictions_list}
+    return {"data": predictions_list}
     
 # Supporting Methods
 # finding observatory based on given request
@@ -93,8 +94,6 @@ def weather_recent(obs):
         else:
             return None
         obs_last_update+=timedelta(days=1)
-    if (df_up_to_date == None):
-        raise HTTPException(status_code=500, detail="Recent Data Can't Be Updated"))
     return df_up_to_date
 
 # Parsing
