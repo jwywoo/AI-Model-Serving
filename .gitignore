@@ -141,6 +141,7 @@ GitHub.sublime-settings
 .venv/
 .env/
 trained_models/
+.rag_server_venv/
 
 *.pyc
 __pycache__/
